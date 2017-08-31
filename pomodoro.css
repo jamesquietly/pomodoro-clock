@@ -1,5 +1,55 @@
-h1 {
-    color:blue;
+#info {
+    font-size: 30px;
+    height: 200px;
+    width: 50%;
+}
+
+#clock {
+    font-size: 50px;
+    width: 400px;
+    height: 200px;
+}
+
+#work, #break {
+    width: 15%;
+    height: 200px;
+    display: inline-block;
+}
+
+.title-button {
+    width: 50%;
+}
+
+.small-button {
+    height: 30px;
+    width: 10%;
+}
+
+#clock > h1 {
+    font-size: 50px;
+}
+
+input {
+    height: 20px;
+    width: 50%;
+    font-size: 20px;
+}
+
+
+div {
+    background-color: rgb(150, 150, 150);
+}
+
+button:hover {
+    border-style: solid;
+    border-width: 2px;
+}
+
+button {
+    border: none;
+    width: 10%;
+    height: 50px;
+    font-size: 20px;
 }
 
 * {

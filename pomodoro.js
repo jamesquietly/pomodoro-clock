@@ -45,7 +45,7 @@ workDefault = 25;
 breakDefault = 5;
 
 //id of inpute fields
-inputFields = ['workMinute', 'breakMinute'];
+inputFields = ['workMinute', 'workSecond', 'breakMinute', 'breakSecond'];
 
 workClock = new Clock(workDefault, 0);
 breakClock = new Clock(breakDefault, 0);
@@ -53,6 +53,7 @@ breakClock = new Clock(breakDefault, 0);
 currentClock = workClock;
 startCountDown = null;
 lastCountDown = 0;
+inputAreEnabled = true;
 
 //add zero to number if it is less than 10
 function padding(number) {
@@ -72,6 +73,7 @@ function disableInput(fields) {
         console.log(fields[i])
         document.getElementById(fields[i]).disabled = true;
     }
+    inputAreEnabled = false;
 }
 
 //enable input fields
@@ -79,11 +81,20 @@ function enableInput(fields) {
     for (var i = 0; i < fields.length; i++) {
         document.getElementById(fields[i]).disabled = false;
     }
+    inputAreEnabled = true;
 }
 
 //set text to display the time
 function displayClock() {
-    document.getElementById("timer").innerHTML = currentClock.display();
+    var clockType = ""
+    if (currentClock == workClock) {
+        clockType = "Work ";
+    }
+    else {
+        clockType = "Break ";
+    }
+    document.getElementById("session").innerHTML = clockType;
+    document.getElementById("time").innerHTML = currentClock.display();
 }
 
 function pauseClock() {
@@ -107,14 +118,32 @@ function switchClock() {
 
 //set initial minute values
 function setClockMinute(clock, value) {
-    if(clock == workClock) {
-        workClock.minutes = value;
-        workClock.resetTotalSeconds();
+    if (inputAreEnabled && value >= 0) {
+        if(clock == workClock) {
+            workClock.minutes = value;
+            workClock.resetTotalSeconds();
+        }
+        else {
+            breakClock.minutes = value;
+            breakClock.resetTotalSeconds();
+        }
     }
-    else {
-        breakClock.minutes = value;
-        breakClock.resetTotalSeconds();
+    setInputFields()
+    displayClock();
+}
+
+function setClockSecond(clock, value) {
+    if (inputAreEnabled && value >= 0) {
+        if(clock == workClock) {
+            workClock.seconds = value;
+            workClock.resetTotalSeconds();
+        }
+        else {
+            breakClock.seconds = value;
+            breakClock.resetTotalSeconds();
+        }
     }
+    setInputFields()
     displayClock();
 }
 
@@ -153,10 +182,20 @@ function resetClock() {
     breakClock.seconds = 0;
     breakClock.resetTotalSeconds();
 
-    document.getElementById('workMinute').value = workClock.minutes;
-    document.getElementById('breakMinute').value = breakClock.minutes;
-
     currentClock = workClock;
+    setInputFields();
+    displayClock();
+}
+
+//set current clock to work time
+function setToWork() {
+    currentClock = workClock;
+    displayClock();
+}
+
+//set current clock to break time
+function setToBreak() {
+    currentClock = breakClock;
     displayClock();
 }
 
@@ -178,9 +217,15 @@ function isValid(input) {
     return result;
 }
 
-$(document).ready(function() {
+function setInputFields() {
     document.getElementById('workMinute').value = workClock.minutes;
+    document.getElementById('workSecond').value = workClock.seconds;
     document.getElementById('breakMinute').value = breakClock.minutes;
+    document.getElementById('breakSecond').value = breakClock.seconds;
+}
+
+$(document).ready(function() {
+    setInputFields();
     displayClock();
 
     $('#workMinute').on('keyup', function() {
@@ -190,10 +235,24 @@ $(document).ready(function() {
         }
     });
 
+    $('#workSecond').on('keyup', function() {
+        var validNumberCheck = isValid($(this).val());
+        if( validNumberCheck.boolean ) {
+            setClockSecond(workClock, validNumberCheck.number);
+        }
+    });
+
     $('#breakMinute').on('keyup', function() {
         var validNumberCheck = isValid($(this).val());
         if( validNumberCheck.boolean ) {
             setClockMinute(breakClock, validNumberCheck.number);
+        }
+    });
+
+    $('#breakSecond').on('keyup', function() {
+        var validNumberCheck = isValid($(this).val());
+        if( validNumberCheck.boolean ) {
+            setClockSecond(breakClock, validNumberCheck.number);
         }
     });  
 });

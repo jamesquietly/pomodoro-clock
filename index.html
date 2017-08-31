@@ -9,19 +9,39 @@
 <body>
   <h1>Pomodoro Clock</h1>
   <div id="work">
-    <h2>Work</h2>
+    <button type="button" onclick="setToWork()" class="title-button">Work</button>
+    <h2>Minute:</h2>
+    <button type="button" class="small-button" onclick="setClockMinute(workClock, workClock.minutes - 1)">-</button>
     <input type="text" id="workMinute">
-  </div id="break">
-    <h2>Break</h2>
-    <input type="text" id="breakMinute">
-  <div id="break">
+    <button type="button" class="small-button" onclick="setClockMinute(workClock, workClock.minutes + 1)">+</button>
+    <h2>Second:</h2>
+    <button type="button" class="small-button" onclick="setClockSecond(workClock, workClock.seconds - 1)">-</button>
+    <input type="text" id="workSecond">
+    <button type="button" class="small-button" onclick="setClockSecond(workClock, workClock.seconds + 1)">+</button>
   </div>
-  <div id="timer">
+  <div id="break">
+    <button type="button" onclick="setToBreak()" class="title-button">Break</button>
+    <h2>Minute:</h2>
+    <button type="button" class="small-button" onclick="setClockMinute(breakClock, breakClock.minutes - 1)">-</button>
+    <input type="text" id="breakMinute">
+    <button type="button" class="small-button" onclick="setClockMinute(breakClock, breakClock.minutes + 1)">+</button>
+    <h2>Second:</h2>
+    <button type="button" class="small-button" onclick="setClockSecond(breakClock, breakClock.seconds - 1)">-</button>
+    <input type="text" id="breakSecond">
+    <button type="button" class="small-button" onclick="setClockSecond(breakClock, breakClock.seconds + 1)">+</button>
+  </div>
+  <div id="clock">
+    <h1 id="session"></h1>
+    <h1 id="time"></h1>
   </div>
   <button type="button" onclick="startClock()">Start</button>
   <button type="button" onclick="pauseClock()">Pause</button>
   <button type="button" onclick="stopClock()">Stop</button>
   <button type="button" onclick="resetClock()">Reset</button>
+  <div id="info">
+    <p> The Pomodoro Technique is to work for a certain amount of time then take a break and repeat. This clock will cycle between work and break time.
+    </p>
+  </div>
 
 
   <script src="pomodoro.js"></script>
